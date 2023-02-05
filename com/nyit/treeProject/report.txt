@@ -1,0 +1,111 @@
+Basic property of B+ tree:
+
+1.All leaves are at same level
+2.The root has at least two children
+3.Each node except root can have a maximum of 4 children and at least 2 children.
+4.Each node can contain a maximum of 3 keys and a minimum of 1 keys
+
+In order to keep the property.
+During the insertion:
+1. Split Leaf nodes if capacity is full
+2. Split internal nodes if internal nodes is full
+3. increase height based on split
+
+During the deletion:
+1. Borrow to Leaf node if sibling is able to give but keep the property
+2. Merge to Leaf node if sibling is not able to give
+3. Borrow to internal node if sibling is able to give but keep the property
+4. Merge to internal node if sibling is not able to give
+5. if not able to do both, depth - 1 
+
+Design:
+	Operations for tree:
+		1. Insert
+		2. Delete
+		3. Search
+	Checks for tree:
+		1. LeafNode deficiency
+		2. LeafNode overfull
+		3. LeafNode lendable
+		4. LeafNode mergeable
+		5. InternalNode deficiency
+		6. InternalNode overfull
+		7. InternalNode lendable
+		8. InternalNode mergable
+		9. root empty
+	Balancing the tree:
+		1.splitLeaf
+		2.splitInternalNode
+			1. splitKeys
+			2. splitChildPointers
+		3.merge for LeafNodes
+		4.merge for internalNodes
+
+BPlus Tree class:
+	insert(id, description){
+		Simple insertion if empty
+		insert to leaf node(leaf insertion call)
+			if leaf overfull generate key and split also generate the internal node
+		check internal node which is the parent, split internal node if it is overfull
+	}
+	delete(id){
+		delete to part list (leaf delete call)
+		if deficiency in leaf
+			merge from other leaf
+			if merge other leaf not working
+				remove internal node
+					check internal node deficiency
+						handle deficiency
+	}
+	search(id){
+		search for internal node
+		binary search for leaf node
+		Print 10 parts using a another helper class for multi types outputs
+	}
+	handleDeficiency(Node){
+		merge or remove node which decrease height of tree to fix deficient node
+		check sibling internal node
+			if enough keys to give, borrow
+			if mergeable, merge
+		check parent for deficiency and recursion
+	}
+	modifyDescription(id){
+		same as search without next 10 parts
+		change part property
+	}
+	helperFunctions:
+		sorting partsList
+		add keys to internal node
+		find index of internal node for search
+		get partsNum in partsList
+InternalNode class:
+	insert(internalNode, index){
+		insert internalNode to this object childPointers of index index
+	}
+	removeKey(index){
+		remove key of index index
+	}
+	removePointer(pointer){
+		remove the childPointer in childPointers same as pointer
+	}
+	check merge
+	check lend
+	check deficiency
+	check full
+LeafNode class:
+	insert(part){
+		insert part
+	}
+	delete(index){
+		delete part in partlist at index index
+	}
+	check merge
+	check lend
+	check full
+	check deficiency
+Helper classes:
+	PartObject for accessing
+	PartReader for reading partObject from string line
+	SearchResult for read next 10 parts process
+Execution class:
+	User interface
